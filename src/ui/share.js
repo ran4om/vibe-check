@@ -2,11 +2,11 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { formatBytes } from '../analyzers/size.js';
 
-const BASE_URL = 'https://vibe-check.vercel.app';
+const BASE_URL = 'https://api-vibecheck.vercel.app';
 
 /**
  * Generates a shareable URL with all report data encoded in the hash.
- * Format: https://vibe-check.vercel.app/#u=<url>&v=<vibeId>&s=<scores>&t=<stats>&r=<roastIndex>
+ * Format: https://api-vibecheck.vercel.app/#u=<url>&v=<vibeId>&s=<scores>&t=<stats>&r=<roastIndex>
  */
 export function generateShareUrl({ url, verdict, analyses, roastIndex }) {
   // Strip protocol from URL
