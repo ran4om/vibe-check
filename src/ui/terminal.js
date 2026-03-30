@@ -150,7 +150,7 @@ export function renderTerminal(report) {
   if (report.shareUrl) {
     console.log(`  ${chalk.bold('🔗 Share →')} ${chalk.cyan.underline(report.shareUrl)}`);
   }
-  console.log(chalk.dim(`  📋 Want a Gist? ${chalk.cyan('vibe-check <url> --gist')}`));
+  console.log(chalk.dim(`  📋 Want a Gist? ${chalk.cyan('npx @ran4om/vibe-check <url> --gist')}`));
   console.log('');
 }
 

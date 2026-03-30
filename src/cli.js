@@ -18,7 +18,7 @@ export async function run() {
   const program = new Command();
 
   program
-    .name('vibe-check')
+    .name('@ran4om/vibe-check')
     .description('Give any API a personality report 🔮')
     .version(pkg.version)
     .argument('<url>', 'The API endpoint URL to vibe-check')
@@ -37,7 +37,7 @@ export async function run() {
         try {
           targetUrl = new URL(url.startsWith('http') ? url : `https://${url}`);
         } catch {
-          console.error('❌ Invalid URL. Try: vibe-check https://api.example.com/endpoint');
+          console.error('❌ Invalid URL. Try: npx @ran4om/vibe-check https://api.example.com/endpoint');
           process.exit(1);
         }
 

@@ -5,7 +5,7 @@
 One command. One URL. One vibe.
 
 ```bash
-npx vibe-check https://api.example.com/users
+npx @ran4om/vibe-check https://api.example.com/users
 ```
 
 or with Bun:
@@ -43,22 +43,22 @@ Think of it like a code linter, but for API behavior. Instead of just showing nu
 
 ```bash
 # Basic usage
-npx vibe-check https://api.example.com/endpoint
+npx @ran4om/vibe-check https://api.example.com/endpoint
 
 # Custom request count
-npx vibe-check https://api.example.com/endpoint --requests 50
+npx @ran4om/vibe-check https://api.example.com/endpoint --requests 50
 
 # POST request with body
-npx vibe-check https://api.example.com/create -m POST -b '{"name": "test"}'
+npx @ran4om/vibe-check https://api.example.com/create -m POST -b '{"name": "test"}'
 
 # Add custom headers
-npx vibe-check https://api.example.com/secure -H "Authorization: Bearer token123"
+npx @ran4om/vibe-check https://api.example.com/secure -H "Authorization: Bearer token123"
 
 # Get raw JSON output
-npx vibe-check https://api.example.com/endpoint --json
+npx @ran4om/vibe-check https://api.example.com/endpoint --json
 
 # Share via GitHub Gist
-npx vibe-check https://api.example.com/endpoint --gist
+npx @ran4om/vibe-check https://api.example.com/endpoint --gist
 ```
 
 ## Options
@@ -87,7 +87,7 @@ The link opens a beautiful web report card — no account needed, no backend, ju
 Want a GitHub Gist instead? Use `--gist` (requires [GitHub CLI](https://cli.github.com)):
 
 ```bash
-npx vibe-check https://api.example.com/endpoint --gist
+npx @ran4om/vibe-check https://api.example.com/endpoint --gist
 # → Gist → https://gist.github.com/abc123
 ```
 

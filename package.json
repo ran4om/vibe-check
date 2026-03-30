@@ -1,5 +1,5 @@
 {
-  "name": "vibe-check",
+  "name": "@ran4om/vibe-check",
   "version": "1.0.0",
   "description": "Give any API a personality report. One command, one URL, one vibe.",
   "type": "module",
