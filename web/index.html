@@ -371,17 +371,25 @@
     let traitsHtml = '';
     TRAITS.forEach((trait, i) => {
       const score = scores[i];
-      const barColor = getBarColor(score);
-      const labelColor = getLabelColor(score);
+      let barHex = '#fe7453'; // error
+      let labelClass = 'text-[#fe7453]';
+      if (score >= 70) {
+        barHex = '#81ecff'; // tertiary
+        labelClass = 'text-[#81ecff]';
+      } else if (score >= 40) {
+        barHex = '#ffdd79'; // primary
+        labelClass = 'text-[#ffdd79]';
+      }
+      
       const traitLabel = getTraitLabel(trait.key, score);
       traitsHtml += `
-        <div class="space-y-1">
-          <div class="flex justify-between font-label text-sm font-bold uppercase tracking-wider">
-            <span>${trait.label}</span>
-            <span class="${labelColor}">${traitLabel} (${score}%)</span>
+        <div>
+          <div class="flex justify-between font-label text-sm font-bold uppercase tracking-wider mb-2">
+            <span class="text-[#e7e5e4]">${trait.label}</span>
+            <span class="${labelClass}">${traitLabel} (${score}%)</span>
           </div>
-          <div class="h-3.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
-            <div class="h-full ${barColor} rounded-full" style="width: ${score}%"></div>
+          <div class="h-3.5 w-full bg-[#262626] rounded-full overflow-hidden">
+            <div class="h-full rounded-full" style="width: ${score}%; background-color: ${barHex};"></div>
           </div>
         </div>
       `;
@@ -390,65 +398,69 @@
     // Create container
     const container = document.createElement('div');
     container.innerHTML = `
-<div class="fixed top-[-9999px] left-[-9999px] w-[1200px] h-[630px] bg-surface text-on-surface font-body flex flex-col justify-between" id="share-card-container">
-  <div class="flex-1 w-full px-12 pt-10 pb-6 flex flex-col">
-    <!-- API URL Header -->
-    <div class="flex items-center justify-center gap-2 text-on-surface-variant/60 border-b border-outline-variant/30 pb-3 mb-6">
-      <span class="material-symbols-outlined text-lg">terminal</span>
-      <span class="font-label text-sm uppercase tracking-widest">Target API</span>
-      <code class="font-label text-lg text-tertiary ml-2 font-bold">${url}</code>
+<div class="fixed top-[-9999px] left-[-9999px] w-[1200px] h-[630px] bg-[#0e0e0e] text-[#e7e5e4] font-body flex flex-col box-border" id="share-card-container" style="width: 1200px; height: 630px; box-sizing: border-box;">
+  <div class="flex-1 w-full px-12 pt-8 flex flex-col box-border min-h-0 relative z-10">
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-[#484848]/40 pb-4 mb-6 shrink-0">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-2xl text-[#acabaa]">terminal</span>
+        <span class="font-label text-sm uppercase tracking-widest text-[#acabaa]">Target API</span>
+        <code class="font-label text-xl text-[#00d4ec] ml-2 font-bold">${url}</code>
+      </div>
+      <div class="flex items-center gap-3 bg-[#1f2020] rounded-full px-5 py-2 border border-[#484848]/40">
+        <span class="font-label text-xs uppercase tracking-widest text-[#acabaa]">Overall Score</span>
+        <span class="font-headline text-2xl font-black text-[#ffdd79]">${overallScore}/100</span>
+      </div>
     </div>
 
-    <!-- Central Content Grid -->
-    <div class="relative flex-1 flex flex-col">
-      <div class="vibe-gradient-bg absolute inset-0 blur-[120px] opacity-15 rounded-full"></div>
-      
-      <div class="relative text-center mb-6 z-10">
+    <!-- Hero -->
+    <div class="relative text-center mb-6 shrink-0">
+      <div class="vibe-gradient-bg absolute top-[-50%] left-[10%] w-[80%] h-[200%] blur-[120px] opacity-[0.15] pointer-events-none"></div>
+      <div class="relative flex flex-col items-center justify-center">
         <div class="flex items-center justify-center gap-6">
-          <h1 class="font-headline text-[90px] font-black text-primary italic leading-none">${vibe.label}</h1>
-          <span class="text-[72px]">${vibe.emoji}</span>
-          <div class="bg-surface-container-high rounded-full px-6 py-2 border border-outline-variant/10 ml-4 flex flex-col items-center justify-center shadow-lg">
-            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60">Score</span>
-            <span class="font-headline text-3xl font-black text-primary">${overallScore}</span>
-          </div>
+          <span class="text-[72px] leading-none">${vibe.emoji}</span>
+          <h1 class="font-headline text-[80px] font-black text-[#ffdd79] italic leading-none m-0 p-0">${vibe.label}</h1>
         </div>
-        <p class="font-body text-2xl text-on-surface-variant font-medium mt-3 leading-snug">"${roast}"</p>
+        <p class="font-body text-2xl text-[#e7e5e4] font-medium mt-4 m-0 p-0">"${roast}"</p>
       </div>
+    </div>
 
-      <div class="grid grid-cols-12 gap-6 flex-1 h-[260px] relative z-10">
-        <!-- Traits -->
-        <div class="col-span-8 bg-surface-container/90 backdrop-blur-sm p-8 rounded-[2.5rem] border border-outline-variant/10 shadow-xl relative overflow-hidden flex flex-col justify-center gap-3 w-full h-full">
-          <div class="absolute top-0 right-0 p-6 opacity-[0.03]">
-            <span class="material-symbols-outlined text-9xl">equalizer</span>
-          </div>
+    <!-- Bento Grid -->
+    <div class="flex gap-8 flex-1 w-full shrink-0 pb-8 box-border min-h-0">
+      <!-- Traits -->
+      <div class="w-[60%] bg-[#191a1a] rounded-[2rem] border border-[#484848]/20 p-8 flex flex-col justify-between box-border overflow-hidden relative shadow-lg">
+        <div class="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
+          <span class="material-symbols-outlined text-9xl">equalizer</span>
+        </div>
+        <div class="relative z-10 flex flex-col justify-between h-full">
           ${traitsHtml}
         </div>
+      </div>
 
-        <!-- Vital Stats -->
-        <div class="col-span-4 bg-primary text-on-primary-fixed p-8 rounded-[2.5rem] flex flex-col shadow-xl w-full h-full">
-          <div class="space-y-1 mb-4">
-            <span class="material-symbols-outlined text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">timer</span>
-            <h3 class="font-headline text-xl font-black uppercase">Vital Stats</h3>
-          </div>
-          <div class="flex-1 flex flex-col justify-between">
-            <div><div class="font-label text-sm uppercase font-bold opacity-70">Avg Response</div><div class="font-headline text-4xl font-black">${formatMs(stats[0])}</div></div>
-            <div><div class="font-label text-sm uppercase font-bold opacity-70">P50 / P95</div><div class="font-headline text-2xl font-bold">${formatMs(stats[1])} / ${formatMs(stats[2])}</div></div>
-            <div><div class="font-label text-sm uppercase font-bold opacity-70">Payload Size</div><div class="font-headline text-4xl font-black">${formatBytes(stats[3])}</div></div>
-          </div>
+      <!-- Vital Stats -->
+      <div class="w-[40%] bg-[#ffdd79] text-[#413200] rounded-[2rem] p-8 flex flex-col justify-between box-border shadow-2xl relative">
+        <div class="flex items-center gap-3 shrink-0">
+          <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">timer</span>
+          <h3 class="font-headline text-xl font-black uppercase m-0">Vital Stats</h3>
+        </div>
+        <div class="flex-1 flex flex-col justify-between mt-4">
+          <div><div class="font-label text-sm uppercase font-bold opacity-70">Avg Response</div><div class="font-headline text-[40px] leading-none font-black tracking-tight mt-1">${formatMs(stats[0])}</div></div>
+          <div><div class="font-label text-sm uppercase font-bold opacity-70">P50 / P95</div><div class="font-headline text-2xl font-bold mt-1">${formatMs(stats[1])} / ${formatMs(stats[2])}</div></div>
+          <div><div class="font-label text-sm uppercase font-bold opacity-70">Payload Size</div><div class="font-headline text-[40px] leading-none font-black tracking-tight mt-1">${formatBytes(stats[3])}</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer Strip -->
-  <div class="w-full h-[64px] shrink-0 bg-surface-container border-t border-outline-variant/20 flex items-center justify-between px-12 z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+  <!-- Footer -->
+  <div class="h-[64px] shrink-0 w-full bg-[#131313] border-t border-[#484848]/30 flex items-center justify-between px-12 box-border relative z-20">
     <div class="flex items-center gap-3">
-      <span class="text-primary text-sm font-mono font-bold">$</span>
-      <code class="font-label text-base text-on-surface font-medium tracking-wide">npx vibe-check ${url}</code>
+      <span class="text-[#ffdd79] text-xl font-mono font-bold leading-none">$</span>
+      <code class="font-label text-xl text-[#e7e5e4] tracking-wide font-medium leading-none">npx vibe-check ${url}</code>
     </div>
-    <div class="flex items-center gap-2 text-on-surface-variant/80">
-      <svg aria-hidden="true" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
-      <span class="font-label text-sm tracking-widest font-bold">github.com/ran4om/vibe-check</span>
+    <div class="flex items-center gap-3 text-[#acabaa]">
+      <svg aria-hidden="true" class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+      <span class="font-label text-base tracking-widest font-bold leading-none">github.com/ran4om/vibe-check</span>
     </div>
   </div>
 </div>
@@ -461,11 +473,24 @@
 
     const element = document.getElementById('share-card-container');
     
+    // Create an explicit canvas for perfect dimensions
     const canvas = await html2canvas(element, {
+      width: 1200,
+      height: 630,
       scale: 2,
       useCORS: true,
       backgroundColor: '#0e0e0e',
-      logging: false
+      logging: false,
+      onclone: (doc) => {
+        // Just in case there's any dynamic Tailwind quirks missed by html2canvas
+        const el = doc.getElementById('share-card-container');
+        if (el) {
+          el.style.transform = 'none';
+          el.style.position = 'relative'; 
+          el.style.top = '0';
+          el.style.left = '0';
+        }
+      }
     });
 
     document.body.removeChild(container);
