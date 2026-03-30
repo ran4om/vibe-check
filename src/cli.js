@@ -8,7 +8,7 @@ import { analyzeHeaders } from './analyzers/headers.js';
 import { computeVerdict } from './verdict.js';
 import { generateRoast } from './roast.js';
 import { renderTerminal, renderHeader } from './ui/terminal.js';
-import { shareToGist } from './ui/share.js';
+import { generateShareUrl, shareToGist } from './ui/share.js';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -28,7 +28,7 @@ export async function run() {
     .option('-b, --body <json>', 'Request body (JSON string)')
     .option('-t, --timeout <ms>', 'Request timeout in milliseconds', '10000')
     .option('--json', 'Output raw JSON instead of styled terminal')
-    .option('--share', 'Share your vibe report via GitHub Gist')
+    .option('--gist', 'Also share your vibe report via GitHub Gist')
     .option('--no-color', 'Disable colored output')
     .action(async (url, options) => {
       try {
@@ -84,17 +84,27 @@ export async function run() {
         // Phase 3: Verdict
         const verdict = computeVerdict(analyses);
 
-        // Phase 4: Roast
+        // Phase 4: Roast (returns { text, index })
         const roast = generateRoast(analyses, verdict);
 
-        // Phase 5: Output
+        // Phase 5: Generate share URL
+        const shareUrl = generateShareUrl({
+          url: targetUrl.href,
+          verdict,
+          analyses,
+          roastIndex: roast.index,
+        });
+
+        // Phase 6: Output
         const report = {
           url: targetUrl.href,
           timestamp: new Date().toISOString(),
           requestCount,
           analyses,
           verdict,
-          roast,
+          roast: roast.text,
+          roastIndex: roast.index,
+          shareUrl,
         };
 
         if (options.json) {
@@ -103,8 +113,8 @@ export async function run() {
           renderTerminal(report);
         }
 
-        // Phase 6: Share (optional)
-        if (options.share) {
+        // Phase 7: Gist (optional)
+        if (options.gist) {
           await shareToGist(report);
         }
       } catch (error) {

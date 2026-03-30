@@ -24,13 +24,12 @@ Think of it like a code linter, but for API behavior. Instead of just showing nu
 
 | Score | Label | Emoji | Meaning |
 |-------|-------|-------|---------|
-| 90–100 | **Immaculate** | ✨ | Elite. Genuinely impressive. |
-| 75–89 | **Snappy** | ⚡ | Fast, reliable, well-mannered. |
-| 60–74 | **Chill** | 😎 | Gets the job done, no drama. |
-| 40–59 | **Mid** | 🫤 | It works... technically. |
-| 25–39 | **Sleepy** | 😴 | Needs a coffee and a stern talk. |
-| 10–24 | **Chaotic** | 🌀 | A gambling experience. |
-| 0–9 | **Cooked** | 💀 | Thoughts and prayers. |
+| 80–100 | **Snappy** | ⚡ | Fast, reliable, well-mannered. |
+| 60–79 | **Chill** | 😎 | Gets the job done, no drama. |
+| 45–59 | **Chunky** | 🧱 | It works, but it's carrying extra weight. |
+| 30–44 | **Sleepy** | 😴 | Needs a coffee and a stern talk. |
+| 15–29 | **Chaotic** | 🌀 | A gambling experience for your users. |
+| 0–14 | **Cooked** | 💀 | Thoughts and prayers. |
 
 ## What it analyzes
 
@@ -59,7 +58,7 @@ npx vibe-check https://api.example.com/secure -H "Authorization: Bearer token123
 npx vibe-check https://api.example.com/endpoint --json
 
 # Share via GitHub Gist
-npx vibe-check https://api.example.com/endpoint --share
+npx vibe-check https://api.example.com/endpoint --gist
 ```
 
 ## Options
@@ -72,19 +71,25 @@ npx vibe-check https://api.example.com/endpoint --share
 | `-b, --body <json>` | Request body (JSON) | — |
 | `-t, --timeout <ms>` | Request timeout | 10000 |
 | `--json` | Output raw JSON | — |
-| `--share` | Share report via GitHub Gist | — |
+| `--gist` | Also share via GitHub Gist | — |
 | `--no-color` | Disable colors | — |
 
 ## Sharing
 
-Share your API's vibe report with the `--share` flag. It creates a public GitHub Gist with a beautiful markdown report:
+Every vibe-check generates a **shareable link** automatically:
 
-```bash
-npx vibe-check https://api.example.com/endpoint --share
-# → Share your vibe report → https://gist.github.com/abc123
+```
+🔗 Share → https://vibe-check.vercel.app/#u=httpbin.org%2Fget&v=4&s=75,20,100,100,50&t=442,197,640,394&r=16
 ```
 
-Requires [GitHub CLI](https://cli.github.com) (`gh`) to be installed and authenticated.
+The link opens a beautiful web report card — no account needed, no backend, just a static page that reconstructs the report from the URL.
+
+Want a GitHub Gist instead? Use `--gist` (requires [GitHub CLI](https://cli.github.com)):
+
+```bash
+npx vibe-check https://api.example.com/endpoint --gist
+# → Gist → https://gist.github.com/abc123
+```
 
 ## Use Cases
 

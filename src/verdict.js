@@ -1,15 +1,15 @@
 /**
  * Verdict engine — combines all analyzer scores into a final personality profile.
+ * Uses 6 personality tiers with numeric IDs for the shareable URL.
  */
 
 const PERSONALITY_TIERS = [
-  { min: 90, label: 'Immaculate',  emoji: '✨', color: 'green',   tagline: 'This API is genuinely elite.' },
-  { min: 75, label: 'Snappy',      emoji: '⚡', color: 'cyan',    tagline: 'Fast, reliable, and well-mannered.' },
-  { min: 60, label: 'Chill',       emoji: '😎', color: 'blue',    tagline: 'Gets the job done, no drama.' },
-  { min: 40, label: 'Mid',         emoji: '🫤', color: 'yellow',  tagline: 'It works... technically.' },
-  { min: 25, label: 'Sleepy',      emoji: '😴', color: 'orange',  tagline: 'Needs a coffee and a stern talk.' },
-  { min: 10, label: 'Chaotic',     emoji: '🌀', color: 'red',     tagline: 'A gambling experience for your users.' },
-  { min: 0,  label: 'Cooked',      emoji: '💀', color: 'magenta', tagline: 'Thoughts and prayers.' },
+  { min: 80, vibeId: 1, label: 'Snappy',  emoji: '⚡', color: 'cyan',    tagline: 'Fast, reliable, and well-mannered.' },
+  { min: 60, vibeId: 4, label: 'Chill',   emoji: '😎', color: 'blue',    tagline: 'Gets the job done, no drama.' },
+  { min: 45, vibeId: 5, label: 'Chunky',  emoji: '🧱', color: 'yellow',  tagline: 'It works, but it\'s carrying extra weight.' },
+  { min: 30, vibeId: 2, label: 'Sleepy',  emoji: '😴', color: 'orange',  tagline: 'Needs a coffee and a stern talk.' },
+  { min: 15, vibeId: 3, label: 'Chaotic', emoji: '🌀', color: 'red',     tagline: 'A gambling experience for your users.' },
+  { min: 0,  vibeId: 6, label: 'Cooked',  emoji: '💀', color: 'magenta', tagline: 'Thoughts and prayers.' },
 ];
 
 const WEIGHTS = {
@@ -45,6 +45,7 @@ export function computeVerdict(analyses) {
 
   return {
     overallScore,
+    vibeId: tier.vibeId,
     label: tier.label,
     emoji: tier.emoji,
     color: tier.color,

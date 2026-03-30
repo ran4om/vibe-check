@@ -147,7 +147,10 @@ export function renderTerminal(report) {
   console.log('');
 
   // ── Footer ──
-  console.log(chalk.dim(`  💾 Share report: ${chalk.cyan('vibe-check <url> --share')}`));
+  if (report.shareUrl) {
+    console.log(`  ${chalk.bold('🔗 Share →')} ${chalk.cyan.underline(report.shareUrl)}`);
+  }
+  console.log(chalk.dim(`  📋 Want a Gist? ${chalk.cyan('vibe-check <url> --gist')}`));
   console.log('');
 }
 
