@@ -13,6 +13,7 @@
 <meta name="twitter:title" content="🔮 vibe-check — API Personality Report">
 <meta name="twitter:description" content="Give any API a personality report. One command, one URL, one vibe.">
 
+<!-- Libraries -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&family=Manrope:wght@400;500;600;700&family=Space_Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -77,7 +78,7 @@
           fontFamily: {
             "headline": ["Epilogue"],
             "body": ["Manrope"],
-            "label": ["Space Grotesk"]
+            "label": ["Manrope"]
           },
           borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
         },
@@ -132,7 +133,12 @@
 </div>
 
 <!-- Report Card -->
-<div id="report" class="hidden w-full max-w-5xl mx-auto px-6 py-12 lg:py-24">
+<div id="report" class="hidden w-full max-w-5xl mx-auto px-6 py-12 lg:py-24 relative">
+  <!-- Share Photo Button -->
+  <button id="downloadBtn" class="fixed top-4 left-4 sm:top-8 sm:left-8 z-[100] bg-surface-container-high/90 hover:bg-surface-bright backdrop-blur-md border border-outline-variant/30 text-on-surface py-2.5 px-5 rounded-full transition-all active:scale-95 flex items-center gap-2.5 shadow-xl fade-in">
+    <span id="downloadBtnIcon" class="material-symbols-outlined text-[16px] text-primary">ios_share</span>
+    <span class="text-[11px] font-bold uppercase tracking-wider mt-0.5">Share a photo</span>
+  </button>
 <main class="w-full">
 
   <!-- API URL Header -->
@@ -172,23 +178,23 @@
     </div>
 
     <!-- Vital Stats Card -->
-    <div class="md:col-span-4 bg-primary text-on-primary-fixed p-8 rounded-[2.5rem] flex flex-col justify-between shadow-xl fade-in fade-in-4">
-      <div class="space-y-1">
+    <div class="md:col-span-4 bg-primary text-on-primary-fixed p-8 rounded-[2.5rem] flex flex-col shadow-xl fade-in fade-in-4">
+      <div class="space-y-1 mb-8">
         <span class="material-symbols-outlined text-4xl mb-2" style='font-variation-settings: "FILL" 1;'>timer</span>
         <h3 class="font-headline text-xl font-black uppercase">Vital Stats</h3>
       </div>
-      <div class="space-y-6 mt-8">
+      <div class="flex-1 flex flex-col justify-between">
         <div>
-          <div class="font-label text-[10px] uppercase font-bold opacity-60">Avg Response</div>
-          <div id="statAvg" class="font-headline text-3xl font-black"></div>
+          <div class="font-label text-sm uppercase font-bold opacity-70">Avg Response</div>
+          <div id="statAvg" class="font-headline text-4xl font-black"></div>
         </div>
         <div>
-          <div class="font-label text-[10px] uppercase font-bold opacity-60">P50 / P95</div>
-          <div id="statP50P95" class="font-headline text-xl font-bold"></div>
+          <div class="font-label text-sm uppercase font-bold opacity-70">P50 / P95</div>
+          <div id="statP50P95" class="font-headline text-2xl font-bold"></div>
         </div>
         <div>
-          <div class="font-label text-[10px] uppercase font-bold opacity-60">Payload Size</div>
-          <div id="statPayload" class="font-headline text-3xl font-black"></div>
+          <div class="font-label text-sm uppercase font-bold opacity-70">Payload Size</div>
+          <div id="statPayload" class="font-headline text-4xl font-black"></div>
         </div>
       </div>
     </div>
@@ -207,7 +213,7 @@
   <div class="mt-20 pt-12 border-t border-outline-variant/10 w-full max-w-2xl mx-auto flex flex-col items-center gap-8 fade-in fade-in-5">
     <div class="text-center space-y-4 w-full">
       <h4 class="font-headline text-sm font-bold uppercase tracking-widest text-on-surface-variant">Run your own vibe check</h4>
-      <div class="bg-surface-container-low border border-outline-variant/20 rounded-xl p-1 flex items-center justify-between group hover:border-primary/30 transition-colors">
+      <div class="bg-surface-container-low border border-outline-variant/20 rounded-xl p-1 flex items-center justify-between group hover:border-primary/30 transition-colors w-full sm:w-auto">
         <div class="flex items-center gap-3 px-4">
           <span class="text-primary text-xs">$</span>
           <code class="font-label text-sm text-on-surface">npx vibe-check</code>
@@ -353,6 +359,278 @@
     return Math.round(scores.reduce((acc, s, i) => acc + s * weights[i], 0));
   }
 
+  //──── Share Image Generation ────
+
+  async function renderAndDownloadShareImage(data) {
+    const { url, vibeId, scores, stats, roastIndex } = data;
+    const vibe = VIBES[vibeId];
+    const overallScore = computeOverallScore(scores);
+    const roast = ROASTS[roastIndex] || ROASTS[0];
+
+    await document.fonts.ready;
+
+    const w = 1200, h = 630, scale = 2;
+    const canvas = document.createElement('canvas');
+    canvas.width = w * scale;
+    canvas.height = h * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+
+    // 1. Background
+    ctx.fillStyle = '#0e0e0e';
+    ctx.fillRect(0, 0, w, h);
+
+    // 2. Vibe glow gradient (centered slightly above middle)
+    const gx = w / 2;
+    const gy = h / 2 - 80;
+    const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, 450);
+    grad.addColorStop(0, 'rgba(255, 221, 121, 0.12)'); 
+    grad.addColorStop(0.5, 'rgba(129, 236, 255, 0.04)');
+    grad.addColorStop(1, 'rgba(14, 14, 14, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    // Helper: Round Rect Polyfill just in case
+    const drawRoundRect = (x, y, width, height, radius) => {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + width, y, x + width, y + height, radius);
+      ctx.arcTo(x + width, y + height, x, y + height, radius);
+      ctx.arcTo(x, y + height, x, y, radius);
+      ctx.arcTo(x, y, x + width, y, radius);
+      ctx.closePath();
+    };
+
+    // 3. Header
+    const px = 48;
+    const py = 48;
+    
+    // Target API
+    ctx.fillStyle = '#acabaa';
+    ctx.font = '24px "Material Symbols Outlined"';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('terminal', px, py);
+    
+    ctx.font = '700 14px "Manrope"';
+    ctx.fillText('TARGET API', px + 36, py);
+    
+    ctx.fillStyle = '#00d4ec';
+    ctx.font = '800 20px "Manrope"';
+    ctx.fillText(url, px + 140, py);
+
+    // Overall Score Pill
+    ctx.font = '900 24px "Epilogue"';
+    const scoreValW = ctx.measureText(`${overallScore}/100`).width;
+    ctx.font = '700 12px "Manrope"';
+    const scoreLabelW = ctx.measureText('OVERALL SCORE').width;
+    
+    const pillW = scoreLabelW + scoreValW + 50;
+    const pillH = 44;
+    const pillX = w - px - pillW;
+    const pillY = py - pillH/2;
+    
+    ctx.fillStyle = '#1f2020';
+    ctx.strokeStyle = 'rgba(72, 72, 72, 0.4)';
+    ctx.lineWidth = 1;
+    drawRoundRect(pillX, pillY, pillW, pillH, 22);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#acabaa';
+    ctx.font = '700 12px "Manrope"';
+    ctx.textAlign = 'center';
+    ctx.fillText('OVERALL SCORE', pillX + 20 + scoreLabelW/2, py);
+    ctx.fillStyle = '#ffdd79';
+    ctx.font = '900 24px "Epilogue"';
+    ctx.fillText(`${overallScore}/100`, pillX + 30 + scoreLabelW + scoreValW/2, py);
+
+    // Header border bottom
+    ctx.strokeStyle = 'rgba(72, 72, 72, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, py + 30);
+    ctx.lineTo(w - px, py + 30);
+    ctx.stroke();
+
+    // 4. Hero Section
+    const heroY = 160;
+    ctx.font = 'italic 900 84px "Epilogue"';
+    const heroLabelW = ctx.measureText(vibe.label).width;
+    const emojiW = 80; // approximate for 72px font
+    const heroGap = 24;
+    const heroTotalW = emojiW + heroGap + heroLabelW;
+    const heroStartX = w / 2 - heroTotalW / 2;
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '72px "Manrope"';
+    ctx.fillText(vibe.emoji, heroStartX + emojiW/2, heroY);
+
+    ctx.fillStyle = '#ffdd79';
+    ctx.textAlign = 'left';
+    ctx.font = 'italic 900 84px "Epilogue"';
+    ctx.fillText(vibe.label, heroStartX + emojiW + heroGap, heroY + 4);
+
+    ctx.fillStyle = '#e7e5e4';
+    ctx.textAlign = 'center';
+    ctx.font = '500 24px "Manrope"';
+    ctx.fillText(`"${roast}"`, w / 2, heroY + 74);
+
+    // 5. Bento Grid Layout
+    const gridY = 280;
+    const gridH = 260;
+    
+    // --- Traits Box (60%) ---
+    const traitsW = (w - px*2 - 32) * 0.6; // 60% approx
+    const traitsX = px;
+    
+    ctx.fillStyle = '#191a1a';
+    ctx.strokeStyle = 'rgba(72, 72, 72, 0.2)';
+    drawRoundRect(traitsX, gridY, traitsW, gridH, 32);
+    ctx.fill();
+    ctx.stroke();
+
+    // Faint equalizer
+    ctx.fillStyle = 'rgba(255,255,255,0.02)';
+    ctx.font = '120px "Material Symbols Outlined"';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    ctx.fillText('equalizer', traitsX + traitsW - 24, gridY + 24);
+
+    // Traits Logic
+    ctx.textBaseline = 'middle';
+    const tPx = traitsX + 32;
+    TRAITS.forEach((trait, i) => {
+      const score = scores[i];
+      let barHex = '#fe7453';
+      let labelClassHex = '#fe7453';
+      if (score >= 70) {
+        barHex = '#81ecff';
+        labelClassHex = '#81ecff';
+      } else if (score >= 40) {
+        barHex = '#ffdd79';
+        labelClassHex = '#ffdd79';
+      }
+      
+      const traitLabel = getTraitLabel(trait.key, score);
+      const cy = gridY + 36 + i * 46;
+
+      ctx.fillStyle = '#e7e5e4';
+      ctx.textAlign = 'left';
+      ctx.font = '700 13px "Manrope"';
+      ctx.fillText(trait.label.toUpperCase(), tPx, cy);
+
+      ctx.fillStyle = labelClassHex;
+      ctx.textAlign = 'right';
+      ctx.fillText(`${traitLabel.toUpperCase()} (${score}%)`, traitsX + traitsW - 32, cy);
+
+      const barY = cy + 12;
+      const barW = traitsW - 64;
+      const barH = 12;
+      ctx.fillStyle = '#262626';
+      drawRoundRect(tPx, barY, barW, barH, barH/2);
+      ctx.fill();
+
+      ctx.fillStyle = barHex;
+      drawRoundRect(tPx, barY, barW * (score/100), barH, barH/2);
+      ctx.fill();
+    });
+
+    // --- Vital Stats Box (40%) ---
+    const statsW = (w - px*2 - 32) * 0.4;
+    const statsX = traitsX + traitsW + 32;
+    
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 24;
+    ctx.shadowOffsetY = 12;
+    ctx.fillStyle = '#ffdd79';
+    drawRoundRect(statsX, gridY, statsW, gridH, 32);
+    ctx.fill();
+    ctx.restore();
+
+    const sPx = statsX + 32;
+    let currentY = gridY + 30; // 30px top padding
+    
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = '#413200';
+    ctx.font = '28px "Material Symbols Outlined"';
+    ctx.fillText('timer', sPx, currentY);
+    
+    ctx.textBaseline = 'middle';
+    ctx.font = '900 18px "Epilogue"';
+    ctx.fillText('VITAL STATS', sPx + 36, currentY + 14);
+
+    currentY += 46; // move past header
+
+    const statTitles = ['AVG RESPONSE', 'P50 / P95', 'PAYLOAD SIZE'];
+    const statValues = [formatMs(stats[0]), `${formatMs(stats[1])} / ${formatMs(stats[2])}`, formatBytes(stats[3])];
+    
+    ctx.textBaseline = 'top';
+    for(let i=0; i<3; i++) {
+        // Draw title
+        ctx.font = '800 12px "Manrope"';
+        ctx.globalAlpha = 0.7;
+        ctx.fillText(statTitles[i], sPx, currentY);
+        ctx.globalAlpha = 1.0;
+        
+        currentY += 16;
+        
+        // Draw value
+        if (i === 1) {
+            ctx.font = '800 20px "Epilogue"';
+            ctx.fillText(statValues[i], sPx, currentY);
+            currentY += 26;
+        } else {
+            ctx.font = '900 32px "Epilogue"';
+            ctx.fillText(statValues[i], sPx, currentY - 2); 
+            currentY += 34; // bigger step for bigger font
+        }
+        
+        currentY += 16; // spacing to next item
+    }
+
+    // 6. Footer Layout
+    const footerH = 64;
+    const footerY = h - footerH;
+
+    ctx.fillStyle = '#131313';
+    ctx.fillRect(0, footerY, w, footerH);
+    ctx.strokeStyle = 'rgba(72, 72, 72, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, footerY);
+    ctx.lineTo(w, footerY);
+    ctx.stroke();
+
+    const fY = footerY + footerH/2;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    
+    ctx.fillStyle = '#ffdd79';
+    ctx.font = '700 20px "Space Grotesk"';
+    ctx.fillText('$', px, fY + 2);
+    
+    ctx.fillStyle = '#e7e5e4';
+    ctx.font = '500 18px "Manrope"';
+    ctx.fillText(`npx vibe-check ${url}`, px + 22, fY);
+
+    // GitHub Repo Right
+    ctx.textAlign = 'right';
+    ctx.font = '700 16px "Manrope"';
+    ctx.fillStyle = '#acabaa';
+    ctx.fillText('github.com/ran4om/vibe-check', w - px, fY);
+
+    // 7. Save Image
+    const link = document.createElement('a');
+    const safeUrl = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    link.download = `vibe-check-${safeUrl}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
   //──── Render ────
 
   function render(data) {
@@ -384,11 +662,11 @@
       const div = document.createElement('div');
       div.className = 'space-y-2';
       div.innerHTML = `
-        <div class="flex justify-between font-label text-xs uppercase tracking-wider">
+        <div class="flex justify-between font-label text-sm font-bold uppercase tracking-wider">
           <span>${trait.label}</span>
           <span class="${labelColor}">${traitLabel} (${score}%)</span>
         </div>
-        <div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+        <div class="h-3.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
           <div class="h-full ${barColor} rounded-full trait-bar-animated" data-width="${score}"></div>
         </div>
       `;
@@ -418,6 +696,27 @@
           btn.innerHTML = '<span class="material-symbols-outlined text-sm">content_copy</span><span class="text-[10px] font-bold uppercase tracking-tighter">Copy</span>';
         }, 2000);
       });
+    });
+
+    // Download Image Button
+    document.getElementById('downloadBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('downloadBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<div class="inline-block w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div><span class="text-[11px] font-bold uppercase tracking-wider mt-0.5">Generating...</span>';
+      btn.disabled = true;
+
+      try {
+        await renderAndDownloadShareImage(data);
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px] text-primary">check</span><span class="text-[11px] font-bold uppercase tracking-wider mt-0.5">Saved!</span>';
+      } catch (err) {
+        console.error('Image generation error:', err);
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px] text-error">error</span><span class="text-[11px] font-bold uppercase tracking-wider mt-0.5 text-error">Failed</span>';
+      }
+
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }, 3000);
     });
 
     // Show report
