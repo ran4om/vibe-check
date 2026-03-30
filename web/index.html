@@ -77,7 +77,7 @@
           fontFamily: {
             "headline": ["Epilogue"],
             "body": ["Manrope"],
-            "label": ["Space Grotesk"]
+            "label": ["Manrope"]
           },
           borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
         },
@@ -179,16 +179,16 @@
       </div>
       <div class="space-y-6 mt-8">
         <div>
-          <div class="font-label text-[10px] uppercase font-bold opacity-60">Avg Response</div>
-          <div id="statAvg" class="font-headline text-3xl font-black"></div>
+          <div class="font-label text-sm uppercase font-bold opacity-70">Avg Response</div>
+          <div id="statAvg" class="font-headline text-4xl font-black"></div>
         </div>
         <div>
-          <div class="font-label text-[10px] uppercase font-bold opacity-60">P50 / P95</div>
-          <div id="statP50P95" class="font-headline text-xl font-bold"></div>
+          <div class="font-label text-sm uppercase font-bold opacity-70">P50 / P95</div>
+          <div id="statP50P95" class="font-headline text-2xl font-bold"></div>
         </div>
         <div>
-          <div class="font-label text-[10px] uppercase font-bold opacity-60">Payload Size</div>
-          <div id="statPayload" class="font-headline text-3xl font-black"></div>
+          <div class="font-label text-sm uppercase font-bold opacity-70">Payload Size</div>
+          <div id="statPayload" class="font-headline text-4xl font-black"></div>
         </div>
       </div>
     </div>
@@ -384,11 +384,11 @@
       const div = document.createElement('div');
       div.className = 'space-y-2';
       div.innerHTML = `
-        <div class="flex justify-between font-label text-xs uppercase tracking-wider">
+        <div class="flex justify-between font-label text-sm font-bold uppercase tracking-wider">
           <span>${trait.label}</span>
           <span class="${labelColor}">${traitLabel} (${score}%)</span>
         </div>
-        <div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+        <div class="h-3.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
           <div class="h-full ${barColor} rounded-full trait-bar-animated" data-width="${score}"></div>
         </div>
       `;
