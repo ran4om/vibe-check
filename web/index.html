@@ -549,33 +549,45 @@
     ctx.fill();
     ctx.restore();
 
-    const sPx = statsX + 36;
-    ctx.fillStyle = '#413200';
-    ctx.font = '32px "Material Symbols Outlined"';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('timer', sPx, gridY + 44);
+    const sPx = statsX + 32;
+    let currentY = gridY + 30; // 30px top padding
     
-    ctx.font = '900 22px "Epilogue"';
-    ctx.fillText('VITAL STATS', sPx + 44, gridY + 44);
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = '#413200';
+    ctx.font = '28px "Material Symbols Outlined"';
+    ctx.fillText('timer', sPx, currentY);
+    
+    ctx.textBaseline = 'middle';
+    ctx.font = '900 18px "Epilogue"';
+    ctx.fillText('VITAL STATS', sPx + 36, currentY + 14);
 
-    const statsYStart = gridY + 104;
+    currentY += 46; // move past header
+
     const statTitles = ['AVG RESPONSE', 'P50 / P95', 'PAYLOAD SIZE'];
     const statValues = [formatMs(stats[0]), `${formatMs(stats[1])} / ${formatMs(stats[2])}`, formatBytes(stats[3])];
     
+    ctx.textBaseline = 'top';
     for(let i=0; i<3; i++) {
-        const sy = statsYStart + i * 60;
+        // Draw title
         ctx.font = '800 12px "Manrope"';
-        ctx.globalAlpha = 0.6;
-        ctx.fillText(statTitles[i], sPx, sy);
+        ctx.globalAlpha = 0.7;
+        ctx.fillText(statTitles[i], sPx, currentY);
         ctx.globalAlpha = 1.0;
         
+        currentY += 16;
+        
+        // Draw value
         if (i === 1) {
-            ctx.font = '800 26px "Epilogue"';
+            ctx.font = '800 20px "Epilogue"';
+            ctx.fillText(statValues[i], sPx, currentY);
+            currentY += 26;
         } else {
-            ctx.font = '900 42px "Epilogue"';
+            ctx.font = '900 32px "Epilogue"';
+            ctx.fillText(statValues[i], sPx, currentY - 2); 
+            currentY += 34; // bigger step for bigger font
         }
-        ctx.fillText(statValues[i], sPx, sy + 26);
+        
+        currentY += 16; // spacing to next item
     }
 
     // 6. Footer Layout
