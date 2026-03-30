@@ -1,641 +1,438 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔮 vibe-check — API Personality Report</title>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>🔮 vibe-check — API Personality Report</title>
 
-  <!-- OG Tags for Twitter/social cards -->
-  <meta property="og:title" content="🔮 vibe-check — API Personality Report">
-  <meta property="og:description" content="See how this API scored on speed, consistency, size, honesty, and headers.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://vibe-check.vercel.app">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="🔮 vibe-check — API Personality Report">
-  <meta name="twitter:description" content="Give any API a personality report. One command, one URL, one vibe.">
+<!-- OG Tags for Twitter/social cards -->
+<meta property="og:title" content="🔮 vibe-check — API Personality Report">
+<meta property="og:description" content="See how this API scored on speed, consistency, size, honesty, and headers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vibe-check.vercel.app">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🔮 vibe-check — API Personality Report">
+<meta name="twitter:description" content="Give any API a personality report. One command, one URL, one vibe.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&family=Manrope:wght@400;500;600;700&family=Space_Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "error-dim": "#c74c2f",
+            "on-primary-fixed": "#413200",
+            "inverse-on-surface": "#565555",
+            "on-error": "#450900",
+            "on-tertiary-container": "#004d57",
+            "on-tertiary-fixed-variant": "#005762",
+            "on-primary": "#624e00",
+            "on-primary-container": "#584500",
+            "outline": "#767575",
+            "on-surface": "#e7e5e4",
+            "on-tertiary": "#005762",
+            "primary": "#ffdd79",
+            "secondary-dim": "#834fff",
+            "on-secondary-fixed": "#4b00b9",
+            "tertiary": "#81ecff",
+            "inverse-surface": "#fcf9f8",
+            "surface-container": "#191a1a",
+            "tertiary-dim": "#00d4ec",
+            "surface-dim": "#0e0e0e",
+            "on-secondary-fixed-variant": "#6a1cf6",
+            "surface-container-highest": "#262626",
+            "surface": "#0e0e0e",
+            "secondary": "#cfbdff",
+            "surface-variant": "#262626",
+            "primary-dim": "#e6c047",
+            "background": "#0e0e0e",
+            "on-background": "#e7e5e4",
+            "surface-container-lowest": "#000000",
+            "on-secondary-container": "#af92ff",
+            "primary-fixed": "#f5ce53",
+            "primary-container": "#f5ce53",
+            "secondary-fixed-dim": "#dccdff",
+            "primary-fixed-dim": "#e6c047",
+            "surface-container-low": "#131313",
+            "on-surface-variant": "#acabaa",
+            "surface-container-high": "#1f2020",
+            "surface-tint": "#ffdd79",
+            "on-error-container": "#ff9b82",
+            "inverse-primary": "#745c00",
+            "error": "#fe7453",
+            "tertiary-fixed-dim": "#00d4ec",
+            "error-container": "#881f05",
+            "on-tertiary-fixed": "#003840",
+            "secondary-fixed": "#e8ddff",
+            "surface-bright": "#2c2c2c",
+            "on-primary-fixed-variant": "#634e00",
+            "on-secondary": "#4c00bc",
+            "outline-variant": "#484848",
+            "secondary-container": "#2d0077",
+            "tertiary-container": "#00e3fd",
+            "tertiary-fixed": "#00e3fd"
+          },
+          fontFamily: {
+            "headline": ["Epilogue"],
+            "body": ["Manrope"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
     }
-
-    :root {
-      --bg-void: #06060e;
-      --bg-card: #0c0c18;
-      --bg-card-inner: #10101f;
-      --border-dim: rgba(167, 139, 250, 0.12);
-      --border-glow: rgba(167, 139, 250, 0.35);
-      --text-primary: #e8e6f0;
-      --text-secondary: #8b87a0;
-      --text-dim: #5a5672;
-      --accent-purple: #a78bfa;
-      --accent-cyan: #06b6d4;
-      --accent-green: #22c55e;
-      --accent-yellow: #eab308;
-      --accent-red: #ef4444;
-      --accent-magenta: #d946ef;
-      --accent-blue: #3b82f6;
-      --accent-orange: #f97316;
-      --font-display: 'Syne', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+</script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
-
-    body {
-      background: var(--bg-void);
-      color: var(--text-primary);
-      font-family: var(--font-mono);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-      overflow-x: hidden;
+    .vibe-gradient-bg {
+      background: linear-gradient(135deg, #ffdd79 0%, #cfbdff 50%, #81ecff 100%);
     }
-
-    /* Ambient background gradients */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(ellipse at 30% 20%, rgba(167, 139, 250, 0.04) 0%, transparent 50%),
-                  radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+    .trait-bar-animated {
+      transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 0%;
     }
-
-    #loading {
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 0.85rem;
-    }
-
-    #loading .spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--border-dim);
-      border-top-color: var(--accent-purple);
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      margin-bottom: 1rem;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    #error {
-      display: none;
-      text-align: center;
-      max-width: 500px;
-    }
-
-    #error h2 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: var(--accent-purple);
-    }
-
-    #error p {
-      color: var(--text-secondary);
-      line-height: 1.7;
-      font-size: 0.85rem;
-    }
-
-    #error code {
-      background: var(--bg-card-inner);
-      padding: 0.2em 0.6em;
-      border-radius: 4px;
-      color: var(--accent-cyan);
-      font-size: 0.8rem;
-    }
-
-    /* ──────── Report Card ──────── */
-    #report {
-      display: none;
-      width: 100%;
-      max-width: 620px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-dim);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 0 80px rgba(167, 139, 250, 0.06),
-                  0 4px 32px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Header */
-    .card-header {
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--border-dim);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-header .brand {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--accent-purple);
-    }
-
-    .card-header .target {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* Verdict Section */
-    .verdict-section {
-      padding: 2.5rem 2rem;
-      text-align: center;
-      border-bottom: 1px solid var(--border-dim);
-      position: relative;
-    }
-
-    .verdict-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, var(--verdict-glow, rgba(167, 139, 250, 0.05)) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .verdict-label-small {
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 1.2rem;
-    }
-
-    .verdict-emoji {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      display: block;
-      animation: floatIn 0.6s ease-out;
-    }
-
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.9); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .verdict-name {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 2.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.3rem;
-      animation: fadeUp 0.5s ease-out 0.15s both;
-    }
-
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    .verdict-score {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.5s ease-out 0.25s both;
-    }
-
-    .verdict-score strong {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-
-    .roast {
-      font-style: italic;
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      line-height: 1.6;
-      max-width: 420px;
-      margin: 0 auto;
-      animation: fadeUp 0.5s ease-out 0.35s both;
-    }
-
-    .roast::before { content: '"'; }
-    .roast::after { content: '"'; }
-
-    /* Trait Breakdown */
-    .traits-section {
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--border-dim);
-    }
-
-    .trait-row {
-      display: grid;
-      grid-template-columns: 110px 1fr 40px;
-      align-items: center;
-      gap: 12px;
-      padding: 0.6rem 0;
-    }
-
-    .trait-row + .trait-row {
-      border-top: 1px solid rgba(167, 139, 250, 0.05);
-    }
-
-    .trait-label {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .trait-label .trait-emoji {
-      font-size: 0.9rem;
-    }
-
-    .trait-bar-container {
-      height: 8px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .trait-bar-fill {
-      height: 100%;
-      border-radius: 4px;
-      width: 0%;
-      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .trait-score {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-align: right;
-    }
-
-    /* Stats Grid */
-    .stats-section {
-      padding: 1.5rem 2rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      border-bottom: 1px solid var(--border-dim);
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .stat-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-    }
-
-    .stat-value {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    /* Footer CTA */
-    .card-footer {
-      padding: 1.5rem 2rem;
-      text-align: center;
-    }
-
-    .cta-text {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      margin-bottom: 0.6rem;
-    }
-
-    .cta-command {
-      display: inline-block;
-      background: var(--bg-card-inner);
-      border: 1px solid var(--border-dim);
-      border-radius: 8px;
-      padding: 0.5rem 1.2rem;
-      font-size: 0.8rem;
-      color: var(--accent-cyan);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .cta-command:hover {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 16px rgba(6, 182, 212, 0.15);
-    }
-
-    .cta-link {
-      display: block;
-      margin-top: 0.8rem;
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      text-decoration: none;
-    }
-
-    .cta-link:hover {
-      color: var(--accent-purple);
-    }
-
-    /* ──── Responsive ──── */
-    @media (max-width: 640px) {
-      body { padding: 1rem 0.5rem; }
-      .card-header { padding: 1rem 1.2rem; }
-      .verdict-section { padding: 2rem 1.2rem; }
-      .verdict-name { font-size: 2rem; }
-      .traits-section { padding: 1rem 1.2rem; }
-      .trait-row { grid-template-columns: 90px 1fr 36px; gap: 8px; }
-      .stats-section { padding: 1rem 1.2rem; }
-      .card-footer { padding: 1rem 1.2rem; }
-    }
-  </style>
+    .fade-in { animation: fadeUp 0.6s ease-out both; }
+    .fade-in-1 { animation-delay: 0.1s; }
+    .fade-in-2 { animation-delay: 0.2s; }
+    .fade-in-3 { animation-delay: 0.35s; }
+    .fade-in-4 { animation-delay: 0.5s; }
+    .fade-in-5 { animation-delay: 0.65s; }
+</style>
 </head>
-<body>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary-fixed min-h-screen flex items-center justify-center">
 
-  <!-- Loading State -->
-  <div id="loading">
-    <div class="spinner"></div>
-    <p>Decoding vibe...</p>
+<!-- Loading State -->
+<div id="loading" class="text-center space-y-4">
+  <div class="inline-block w-6 h-6 border-2 border-outline-variant border-t-primary rounded-full animate-spin"></div>
+  <p class="font-label text-xs uppercase tracking-widest text-on-surface-variant/60">Decoding vibe...</p>
+</div>
+
+<!-- Error State -->
+<div id="error" class="hidden w-full max-w-lg mx-auto px-6 py-24 text-center space-y-8">
+  <h1 class="font-headline text-5xl font-black text-primary italic">vibe-check</h1>
+  <p class="font-body text-lg text-on-surface-variant">No report data found in the URL.</p>
+  <p class="font-body text-sm text-on-surface-variant/60">Run a vibe-check to get a shareable link:</p>
+  <div class="bg-surface-container-low border border-outline-variant/20 rounded-xl p-4 inline-block">
+    <code class="font-label text-sm text-tertiary">npx vibe-check https://your-api.com/endpoint</code>
+  </div>
+  <div>
+    <a class="flex items-center justify-center gap-2 text-on-surface-variant hover:text-primary transition-colors" href="https://github.com/ran4om/vibe-check" target="_blank">
+      <svg aria-hidden="true" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+      <span class="font-label text-xs uppercase tracking-widest">View on GitHub</span>
+    </a>
+  </div>
+</div>
+
+<!-- Report Card -->
+<div id="report" class="hidden w-full max-w-5xl mx-auto px-6 py-12 lg:py-24">
+<main class="w-full">
+
+  <!-- API URL Header -->
+  <div class="flex justify-center mb-12 fade-in fade-in-1">
+    <div class="border-b border-outline-variant/30 pb-2 flex items-center gap-2 text-on-surface-variant/60">
+      <span class="material-symbols-outlined text-sm">terminal</span>
+      <span class="font-label text-[10px] uppercase tracking-widest">Target API</span>
+      <code id="targetUrl" class="font-label text-sm text-tertiary ml-2"></code>
+    </div>
   </div>
 
-  <!-- Error State -->
-  <div id="error">
-    <h2>🔮 vibe-check</h2>
-    <p>
-      No report data found in the URL.<br><br>
-      Run a vibe-check to get a shareable link:
-    </p>
-    <br>
-    <code>npx vibe-check https://your-api.com/endpoint</code>
-    <br><br>
-    <p style="color: var(--text-dim); font-size: 0.75rem;">
-      <a href="https://github.com/ran4om/vibe-check" style="color: var(--accent-purple);">github.com/ran4om/vibe-check</a>
-    </p>
-  </div>
-
-  <!-- Report Card -->
-  <div id="report">
-    <div class="card">
-      <div class="card-header">
-        <span class="brand">🔮 vibe-check</span>
-        <span class="target" id="targetUrl"></span>
+  <!-- Hero Section: The Verdict -->
+  <section class="relative mb-12 fade-in fade-in-2">
+    <div class="vibe-gradient-bg absolute inset-0 blur-[100px] opacity-10 rounded-full"></div>
+    <div class="relative text-center space-y-4">
+      <span class="font-label uppercase tracking-[0.4em] text-secondary text-sm">Official Vibe-Check</span>
+      <div class="flex items-center justify-center gap-4">
+        <h1 id="verdictLabel" class="font-headline text-7xl md:text-9xl font-black text-primary italic leading-none"></h1>
+        <span id="verdictEmoji" class="text-6xl md:text-8xl"></span>
       </div>
+      <p id="roastText" class="font-body text-xl md:text-2xl text-on-surface-variant max-w-xl mx-auto font-medium"></p>
+    </div>
+  </section>
 
-      <div class="verdict-section" id="verdictSection">
-        <div class="verdict-label-small">THE VERDICT</div>
-        <span class="verdict-emoji" id="verdictEmoji"></span>
-        <div class="verdict-name" id="verdictName"></div>
-        <div class="verdict-score">Score: <strong id="verdictScore"></strong>/100</div>
-        <div class="roast" id="roastText"></div>
+  <!-- Bento Grid Results -->
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
+
+    <!-- Trait Bars Card -->
+    <div class="md:col-span-8 bg-surface-container p-8 rounded-[2.5rem] space-y-6 shadow-2xl relative overflow-hidden border border-outline-variant/10 fade-in fade-in-3">
+      <div class="absolute top-0 right-0 p-8 opacity-10">
+        <span class="material-symbols-outlined text-9xl">equalizer</span>
       </div>
+      <h3 class="font-headline text-2xl font-bold flex items-center gap-2">
+        Personality Traits ✨
+      </h3>
+      <div id="traitsContainer" class="space-y-5 relative z-10"></div>
+    </div>
 
-      <div class="traits-section" id="traitsSection"></div>
-
-      <div class="stats-section" id="statsSection"></div>
-
-      <div class="card-footer">
-        <div class="cta-text">Run your own vibe-check</div>
-        <div class="cta-command" id="ctaCommand" title="Click to copy">
-          npx vibe-check &lt;your-api-url&gt;
+    <!-- Vital Stats Card -->
+    <div class="md:col-span-4 bg-primary text-on-primary-fixed p-8 rounded-[2.5rem] flex flex-col justify-between shadow-xl fade-in fade-in-4">
+      <div class="space-y-1">
+        <span class="material-symbols-outlined text-4xl mb-2" style='font-variation-settings: "FILL" 1;'>timer</span>
+        <h3 class="font-headline text-xl font-black uppercase">Vital Stats</h3>
+      </div>
+      <div class="space-y-6 mt-8">
+        <div>
+          <div class="font-label text-[10px] uppercase font-bold opacity-60">Avg Response</div>
+          <div id="statAvg" class="font-headline text-3xl font-black"></div>
         </div>
-        <a href="https://github.com/ran4om/vibe-check" class="cta-link" target="_blank">
-          github.com/ran4om/vibe-check
-        </a>
+        <div>
+          <div class="font-label text-[10px] uppercase font-bold opacity-60">P50 / P95</div>
+          <div id="statP50P95" class="font-headline text-xl font-bold"></div>
+        </div>
+        <div>
+          <div class="font-label text-[10px] uppercase font-bold opacity-60">Payload Size</div>
+          <div id="statPayload" class="font-headline text-3xl font-black"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <script>
-    //──── Data Definitions (must match CLI) ────
+  <!-- Overall Score Badge -->
+  <div class="flex justify-center mb-12 fade-in fade-in-4">
+    <div class="bg-surface-container-high rounded-full px-8 py-3 border border-outline-variant/10 flex items-center gap-3">
+      <span class="font-label text-xs uppercase tracking-widest text-on-surface-variant/60">Overall Score</span>
+      <span id="overallScore" class="font-headline text-2xl font-black text-primary"></span>
+      <span class="font-label text-xs text-on-surface-variant/40">/ 100</span>
+    </div>
+  </div>
 
-    const VIBES = {
-      1: { label: 'Snappy',  emoji: '⚡', color: '#06b6d4', glow: 'rgba(6,182,212,0.08)' },
-      2: { label: 'Sleepy',  emoji: '😴', color: '#f97316', glow: 'rgba(249,115,22,0.08)' },
-      3: { label: 'Chaotic', emoji: '🌀', color: '#ef4444', glow: 'rgba(239,68,68,0.08)' },
-      4: { label: 'Chill',   emoji: '😎', color: '#3b82f6', glow: 'rgba(59,130,246,0.08)' },
-      5: { label: 'Chunky',  emoji: '🧱', color: '#eab308', glow: 'rgba(234,179,8,0.08)' },
-      6: { label: 'Cooked',  emoji: '💀', color: '#d946ef', glow: 'rgba(217,70,239,0.08)' },
-    };
-
-    const TRAITS = [
-      { key: 'speed',       label: 'Speed',       emoji: '⚡' },
-      { key: 'consistency', label: 'Consistency', emoji: '📏' },
-      { key: 'size',        label: 'Size',        emoji: '📦' },
-      { key: 'honesty',     label: 'Honesty',     emoji: '🪟' },
-      { key: 'headers',     label: 'Headers',     emoji: '🏰' },
-    ];
-
-    const ROASTS = [
-      "This API replies before you even finish asking. Respect.",
-      "So fast it could outrun your deployment pipeline.",
-      "Blink and you'll miss the response. In a good way.",
-      "Neither fast nor slow. The beige sedan of APIs.",
-      "It's not slow, it's just... thinking really hard.",
-      "This API responds like it's filling out a government form — in triplicate.",
-      "Slower than a git rebase on a Monday morning.",
-      "If this API were a person, it'd still be loading the question.",
-      "You could compile Chromium faster than this API responds.",
-      "This API is on island time. Permanently.",
-      "Consistent as gravity. Every response, same vibe.",
-      "You could set your watch to these response times.",
-      "Sometimes fast, sometimes... thinking about it.",
-      "Mostly reliable, with occasional main-character moments.",
-      "Every request is a surprise party you didn't ask for.",
-      "This API has more mood swings than a Twitter timeline.",
-      "Response times are a lottery. And you're not winning.",
-      "This API needs therapy. The response times are all over the place.",
-      "Lean responses. This API doesn't waste a byte.",
-      "Sends more data than a 4K stream. For a JSON response.",
-      "The response is so large it has chapters.",
-      "Honest status codes. A rare and beautiful thing.",
-      "200 OK but the body says 'error'. This API gaslit me.",
-      "Lies with a straight 200 face. Trust issues unlocked.",
-      "The status code says success. The body says pain.",
-      "Headers are locked down tight. Security team would be proud.",
-      "Sends more headers than a medieval castle. Most of them are useless.",
-      "Leaking server info like it's trying to get hacked.",
-      "x-powered-by: please-hack-me. Basically.",
-      "No rate limiting, no compression, no shame.",
-    ];
-
-    //──── Parse Hash ────
-
-    function parseHash() {
-      const hash = window.location.hash.slice(1); // remove #
-      if (!hash) return null;
-
-      const params = {};
-      for (const part of hash.split('&')) {
-        const eqIdx = part.indexOf('=');
-        if (eqIdx === -1) continue;
-        params[part.slice(0, eqIdx)] = part.slice(eqIdx + 1);
-      }
-
-      if (!params.u || !params.v || !params.s || !params.t) return null;
-
-      const url = decodeURIComponent(params.u);
-      const vibeId = parseInt(params.v, 10);
-      const scores = params.s.split(',').map(Number);
-      const stats = params.t.split(',').map(Number);
-      const roastIndex = parseInt(params.r || '0', 10);
-
-      if (scores.length !== 5 || stats.length !== 4) return null;
-      if (!VIBES[vibeId]) return null;
-
-      return { url, vibeId, scores, stats, roastIndex };
-    }
-
-    //──── Helpers ────
-
-    function formatBytes(bytes) {
-      if (bytes === 0) return '0 B';
-      const units = ['B', 'KB', 'MB', 'GB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(1024));
-      return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + units[i];
-    }
-
-    function getScoreColor(score) {
-      if (score >= 70) return '#22c55e';
-      if (score >= 40) return '#eab308';
-      return '#ef4444';
-    }
-
-    function computeOverallScore(scores) {
-      const weights = [0.30, 0.25, 0.15, 0.20, 0.10]; // speed, consistency, size, honesty, headers
-      return Math.round(scores.reduce((acc, s, i) => acc + s * weights[i], 0));
-    }
-
-    //──── Render ────
-
-    function render(data) {
-      const { url, vibeId, scores, stats, roastIndex } = data;
-      const vibe = VIBES[vibeId];
-      const overallScore = computeOverallScore(scores);
-
-      // Update page title
-      document.title = `${vibe.emoji} ${vibe.label} — ${url} | vibe-check`;
-
-      // Target URL
-      document.getElementById('targetUrl').textContent = url;
-
-      // Verdict section
-      const verdictSection = document.getElementById('verdictSection');
-      verdictSection.style.setProperty('--verdict-glow', vibe.glow);
-
-      document.getElementById('verdictEmoji').textContent = vibe.emoji;
-
-      const verdictName = document.getElementById('verdictName');
-      verdictName.textContent = vibe.label;
-      verdictName.style.color = vibe.color;
-
-      document.getElementById('verdictScore').textContent = overallScore;
-
-      // Roast
-      const roast = ROASTS[roastIndex] || ROASTS[0];
-      document.getElementById('roastText').textContent = roast;
-
-      // Traits
-      const traitsContainer = document.getElementById('traitsSection');
-      traitsContainer.innerHTML = '';
-
-      TRAITS.forEach((trait, i) => {
-        const score = scores[i];
-        const color = getScoreColor(score);
-
-        const row = document.createElement('div');
-        row.className = 'trait-row';
-        row.innerHTML = `
-          <div class="trait-label">
-            <span class="trait-emoji">${trait.emoji}</span>
-            ${trait.label}
-          </div>
-          <div class="trait-bar-container">
-            <div class="trait-bar-fill" data-score="${score}" style="background: ${color};"></div>
-          </div>
-          <div class="trait-score" style="color: ${color};">${score}</div>
-        `;
-        traitsContainer.appendChild(row);
-      });
-
-      // Animate bars after a small delay
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          document.querySelectorAll('.trait-bar-fill').forEach(bar => {
-            bar.style.width = bar.dataset.score + '%';
-          });
-        }, 100);
-      });
-
-      // Stats
-      const statsContainer = document.getElementById('statsSection');
-      statsContainer.innerHTML = `
-        <div class="stat-item">
-          <span class="stat-label">Avg Response</span>
-          <span class="stat-value">${stats[0]}ms</span>
+  <!-- Share Action Section -->
+  <div class="mt-20 pt-12 border-t border-outline-variant/10 w-full max-w-2xl mx-auto flex flex-col items-center gap-8 fade-in fade-in-5">
+    <div class="text-center space-y-4 w-full">
+      <h4 class="font-headline text-sm font-bold uppercase tracking-widest text-on-surface-variant">Run your own vibe check</h4>
+      <div class="bg-surface-container-low border border-outline-variant/20 rounded-xl p-1 flex items-center justify-between group hover:border-primary/30 transition-colors">
+        <div class="flex items-center gap-3 px-4">
+          <span class="text-primary text-xs">$</span>
+          <code class="font-label text-sm text-on-surface">npx vibe-check</code>
         </div>
-        <div class="stat-item">
-          <span class="stat-label">P50</span>
-          <span class="stat-value">${stats[1]}ms</span>
+        <button id="copyBtn" class="bg-surface-container-highest hover:bg-surface-bright text-on-surface p-3 rounded-lg transition-all active:scale-95 flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">content_copy</span>
+          <span class="text-[10px] font-bold uppercase tracking-tighter">Copy</span>
+        </button>
+      </div>
+    </div>
+    <a class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors group" href="https://github.com/ran4om/vibe-check" target="_blank">
+      <svg aria-hidden="true" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+      <span class="font-label text-xs uppercase tracking-widest">View on GitHub</span>
+    </a>
+  </div>
+</main>
+</div>
+
+<script>
+  //──── Data Definitions (must match CLI exactly) ────
+
+  const VIBES = {
+    1: { label: 'SNAPPY',  emoji: '⚡' },
+    2: { label: 'SLEEPY',  emoji: '😴' },
+    3: { label: 'CHAOTIC', emoji: '🌀' },
+    4: { label: 'CHILL',   emoji: '😎' },
+    5: { label: 'CHUNKY',  emoji: '🧱' },
+    6: { label: 'COOKED',  emoji: '💀' },
+  };
+
+  const TRAITS = [
+    { key: 'speed',       label: 'Speed' },
+    { key: 'consistency', label: 'Consistency' },
+    { key: 'size',        label: 'Size' },
+    { key: 'honesty',     label: 'Honesty' },
+    { key: 'headers',     label: 'Headers' },
+  ];
+
+  const TRAIT_LABELS = {
+    speed:       { high: 'Lightning',   mid: 'Cruising',    low: 'Relaxed' },
+    consistency: { high: 'Steadfast',   mid: 'Wavering',    low: 'Erratic' },
+    size:        { high: 'Lightweight', mid: 'Normal',      low: 'Heavy' },
+    honesty:     { high: 'Open Book',   mid: 'Sketchy',     low: 'Deceptive' },
+    headers:     { high: 'Locked Down', mid: 'Simple',      low: 'Exposed' },
+  };
+
+  const ROASTS = [
+    "This API replies before you even finish asking. Respect.",
+    "So fast it could outrun your deployment pipeline.",
+    "Blink and you'll miss the response. In a good way.",
+    "Neither fast nor slow. The beige sedan of APIs.",
+    "It's not slow, it's just... thinking really hard.",
+    "This API responds like it's filling out a government form — in triplicate.",
+    "Slower than a git rebase on a Monday morning.",
+    "If this API were a person, it'd still be loading the question.",
+    "You could compile Chromium faster than this API responds.",
+    "This API is on island time. Permanently.",
+    "Consistent as gravity. Every response, same vibe.",
+    "You could set your watch to these response times.",
+    "Sometimes fast, sometimes... thinking about it.",
+    "Mostly reliable, with occasional main-character moments.",
+    "Every request is a surprise party you didn't ask for.",
+    "This API has more mood swings than a Twitter timeline.",
+    "Response times are a lottery. And you're not winning.",
+    "This API needs therapy. The response times are all over the place.",
+    "Lean responses. This API doesn't waste a byte.",
+    "Sends more data than a 4K stream. For a JSON response.",
+    "The response is so large it has chapters.",
+    "Honest status codes. A rare and beautiful thing.",
+    "200 OK but the body says 'error'. This API gaslit me.",
+    "Lies with a straight 200 face. Trust issues unlocked.",
+    "The status code says success. The body says pain.",
+    "Headers are locked down tight. Security team would be proud.",
+    "Sends more headers than a medieval castle. Most of them are useless.",
+    "Leaking server info like it's trying to get hacked.",
+    "x-powered-by: please-hack-me. Basically.",
+    "No rate limiting, no compression, no shame.",
+  ];
+
+  function getBarColor(score) {
+    if (score >= 70) return 'bg-tertiary';
+    if (score >= 40) return 'bg-primary';
+    return 'bg-error';
+  }
+
+  function getLabelColor(score) {
+    if (score >= 70) return 'text-tertiary';
+    if (score >= 40) return 'text-primary';
+    return 'text-error';
+  }
+
+  function getTraitLabel(traitKey, score) {
+    const labels = TRAIT_LABELS[traitKey];
+    if (!labels) return '';
+    if (score >= 70) return labels.high;
+    if (score >= 40) return labels.mid;
+    return labels.low;
+  }
+
+  //──── Parse Hash ────
+
+  function parseHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return null;
+
+    const params = {};
+    for (const part of hash.split('&')) {
+      const eqIdx = part.indexOf('=');
+      if (eqIdx === -1) continue;
+      params[part.slice(0, eqIdx)] = part.slice(eqIdx + 1);
+    }
+
+    if (!params.u || !params.v || !params.s || !params.t) return null;
+
+    const url = decodeURIComponent(params.u);
+    const vibeId = parseInt(params.v, 10);
+    const scores = params.s.split(',').map(Number);
+    const stats = params.t.split(',').map(Number);
+    const roastIndex = parseInt(params.r || '0', 10);
+
+    if (scores.length !== 5 || stats.length !== 4) return null;
+    if (!VIBES[vibeId]) return null;
+
+    return { url, vibeId, scores, stats, roastIndex };
+  }
+
+  //──── Helpers ────
+
+  function formatBytes(bytes) {
+    if (bytes === 0) return '0 B';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return (bytes / Math.pow(1024, i)).toFixed(bytes >= 1024 ? 1 : 0) + ' ' + units[i];
+  }
+
+  function formatMs(ms) {
+    if (ms >= 1000) return (ms / 1000).toFixed(1) + 's';
+    return ms + 'ms';
+  }
+
+  function computeOverallScore(scores) {
+    const weights = [0.30, 0.25, 0.15, 0.20, 0.10];
+    return Math.round(scores.reduce((acc, s, i) => acc + s * weights[i], 0));
+  }
+
+  //──── Render ────
+
+  function render(data) {
+    const { url, vibeId, scores, stats, roastIndex } = data;
+    const vibe = VIBES[vibeId];
+    const overallScore = computeOverallScore(scores);
+
+    document.title = `${vibe.emoji} ${vibe.label} — ${url} | vibe-check`;
+
+    document.getElementById('targetUrl').textContent = url;
+    document.getElementById('verdictLabel').textContent = vibe.label;
+    document.getElementById('verdictEmoji').textContent = vibe.emoji;
+
+    const roast = ROASTS[roastIndex] || ROASTS[0];
+    document.getElementById('roastText').innerHTML = `"${roast}"`;
+
+    document.getElementById('overallScore').textContent = overallScore;
+
+    // Traits
+    const container = document.getElementById('traitsContainer');
+    container.innerHTML = '';
+
+    TRAITS.forEach((trait, i) => {
+      const score = scores[i];
+      const barColor = getBarColor(score);
+      const labelColor = getLabelColor(score);
+      const traitLabel = getTraitLabel(trait.key, score);
+
+      const div = document.createElement('div');
+      div.className = 'space-y-2';
+      div.innerHTML = `
+        <div class="flex justify-between font-label text-xs uppercase tracking-wider">
+          <span>${trait.label}</span>
+          <span class="${labelColor}">${traitLabel} (${score}%)</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-label">P95</span>
-          <span class="stat-value">${stats[2]}ms</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Payload</span>
-          <span class="stat-value">${formatBytes(stats[3])}</span>
+        <div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+          <div class="h-full ${barColor} rounded-full trait-bar-animated" data-width="${score}"></div>
         </div>
       `;
+      container.appendChild(div);
+    });
 
-      // CTA
-      document.getElementById('ctaCommand').addEventListener('click', () => {
-        navigator.clipboard.writeText(`npx vibe-check https://${url}`).then(() => {
-          const el = document.getElementById('ctaCommand');
-          el.textContent = 'Copied!';
-          el.style.color = '#22c55e';
-          setTimeout(() => {
-            el.innerHTML = 'npx vibe-check &lt;your-api-url&gt;';
-            el.style.color = '';
-          }, 2000);
+    // Animate bars after brief delay
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.querySelectorAll('.trait-bar-animated').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
         });
+      }, 200);
+    });
+
+    // Stats
+    document.getElementById('statAvg').textContent = formatMs(stats[0]);
+    document.getElementById('statP50P95').textContent = `${formatMs(stats[1])} / ${formatMs(stats[2])}`;
+    document.getElementById('statPayload').textContent = formatBytes(stats[3]);
+
+    // Copy button
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText(`npx vibe-check https://${url}`).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span><span class="text-[10px] font-bold uppercase tracking-tighter">Copied!</span>';
+        setTimeout(() => {
+          btn.innerHTML = '<span class="material-symbols-outlined text-sm">content_copy</span><span class="text-[10px] font-bold uppercase tracking-tighter">Copy</span>';
+        }, 2000);
       });
+    });
 
-      // Show report
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('report').style.display = 'block';
-    }
+    // Show report
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('report').classList.remove('hidden');
+  }
 
-    //──── Init ────
+  //──── Init ────
 
-    const data = parseHash();
-    if (data) {
-      render(data);
-    } else {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('error').style.display = 'block';
-    }
-  </script>
-</body>
-</html>
+  const data = parseHash();
+  if (data) {
+    render(data);
+  } else {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').classList.remove('hidden');
+  }
+</script>
+</body></html>
