@@ -4,7 +4,7 @@
   "description": "Give any API a personality report. One command, one URL, one vibe.",
   "type": "module",
   "bin": {
-    "vibe-check": "./bin/index.js"
+    "vibe-check": "bin/index.js"
   },
   "files": [
     "bin/",
