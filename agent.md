@@ -43,6 +43,8 @@ vercel.json           → Vercel deployment config
 - 6 personality tiers with numeric IDs: 1=Snappy, 2=Sleepy, 3=Chaotic, 4=Chill, 5=Chunky, 6=Cooked
 - Roasts are a flat indexed array of 30 entries (0-29), shared between CLI and web frontend
 - Shareable URL format: `https://vibe-check.vercel.app/#u=<url>&v=<vibeId>&s=<5 scores>&t=<4 stats>&r=<roastIndex>`
+- Web Frontend UI is built from a high-end Stitch editorial design ("Personality Quiz - Vibe Check")
+- Design System: Dark mode, Epilogue (Headlines), Manrope (Body), Space Grotesk (Labels), with vibrant "liquid gold" accents.
 - Gist sharing uses `gh` CLI (graceful fallback if not installed)
 
 ## Shareable URL Spec
