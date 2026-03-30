@@ -79,7 +79,7 @@ npx vibe-check https://api.example.com/endpoint --gist
 Every vibe-check generates a **shareable link** automatically:
 
 ```
-🔗 Share → https://vibe-check.vercel.app/#u=httpbin.org%2Fget&v=4&s=75,20,100,100,50&t=442,197,640,394&r=16
+🔗 Share → https://api-vibecheck.vercel.app/#u=httpbin.org%2Fget&v=4&s=75,20,100,100,50&t=442,197,640,394&r=16
 ```
 
 The link opens a beautiful web report card — no account needed, no backend, just a static page that reconstructs the report from the URL.
